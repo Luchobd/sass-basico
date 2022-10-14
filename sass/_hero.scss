@@ -1,0 +1,36 @@
+@use "mixinsfunc";
+
+@mixin arreglar-imagen {
+  background: {
+    size: cover;
+    repeat: no-repeat;
+    position: center;
+  }
+}
+
+.hero {
+  &__container {
+    height: calc(100vh - 70px);
+    background-image: linear-gradient(#0000006c, #000000c0),
+      url("../img/devimg.png");
+
+    @include arreglar-imagen;
+    // este codigo bloqueado es porque se esta trayendo estos mismos estilos por mixin
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    @include mixinsfunc.crear-flexbox(center);
+  }
+  &__texts {
+    width: 90%;
+    color: #fff;
+  }
+
+  &__title {
+    font-size: mixinsfunc.pixeles-rem(40);
+    margin-bottom: mixinsfunc.pixeles-rem(10);
+  }
+  &__paragraph {
+    font-size: mixinsfunc.pixeles-rem(18);
+  }
+}

@@ -1,0 +1,58 @@
+// @use "variables"; => importando una variable a un componente.
+
+// .nav {
+//   background-color: steelblue;
+
+//   ul {
+//     color: #000;
+
+//     li a {
+//       color: #fff;
+//     }
+//   }
+// }
+
+// $primary: blue;
+
+// Interpolacion de variables
+// :root {
+//   --primary: #{$primary};
+// }
+@use "mixinsfunc";
+
+.nav {
+  background-color: steelblue;
+
+  &__container {
+    width: 90%;
+    margin: 0 auto;
+
+    &--ul {
+      height: 70px;
+      @include mixinsfunc.crear-flexbox(space-evenly);
+      list-style: none;
+    }
+  }
+  &__item {
+    text-decoration: none;
+    color: darkblue;
+
+    &--active {
+      text-decoration: underline;
+    }
+    &:hover {
+      color: papayawhip;
+    }
+  }
+
+  @media (min-width: 764px) {
+    &__container {
+      &--ul {
+        justify-content: flex-end;
+      }
+    }
+    &__item {
+      padding: 0 20px;
+    }
+  }
+}

@@ -1,0 +1,174 @@
+Instalar SASS 
+1. npm init -y 
+
+2. npm install sass --save-dev -> instalar sass en el proyecto
+
+3. npm install -g sass -> instalar sass de forma global
+
+4. crear carpeta sass
+
+5. sass --watch sass:css -> "--watch" => compila el archivo scss en css 
+&& sass:css => "sass" es el nombre de la carpeta sass y :css es la carpeta 
+nueva que va a crear para compilar de sass a css.
+Nota: tambien se puede usar sass "--watch style.scss style.css"
+5.1 MUY IMPORTANTE debemos estar parados en la raiz para poder compilar correctamente
+5.2 RECUERDA la terminal queda escuchando los cambios de forma automatica. 
+
+6. <link rel="stylesheet" href="./css/style.css"> -> de esta forma enlazamos 
+los estilos a la carpeta correcta de css que son los archivos css compilados
+
+
+=============================== Crear Variables ===============================
+	Las variables Globales en SASS se deben declarar en la parte superior del
+archivo, se colocan con un signo de $nombreVariable: blue. De esta forma se hace 
+escalable mantener los colores. 
+
+============================= Usar Parchal ======================
+	Crear Componentes SASS a CSS. Se crea un nuevo componente o archivo SASS y al compilar, se compila con .css
+ejemplo => navbar.scss pasa a navbar.css. Para evitar eso se utilizan parchal. 
+Para utilizar un "parchal" debemos colocar un _Archivo de esta forma se evita que
+al crear un nuevo archivo o componente se esten creando nuevos .css. Esto se hace
+para que no se compilen todos los archivos sino que se modularice el css y se
+pase cada parchal a una hoja de estilos principal. 
+
+============== Pasar un Parchal de un componente a otro =================
+@use "archivo" => de esta forma llamamos al componente para que se renderice
+donde fue llamado. Que en este caso es la hoja principal.
+
+Ejemplo: 
+    @use "navbar";
+    @use "reset";
+
+============= Mover una Variable a otro componente como un parchal =========
+Esto es como mover variables entre componentes.
+1. Creamos la variable => $color: steelblue;
+2. Importamos la variable usando @use "nombreArchivo"
+3. Para usarla debemos tratarla como un objeto, nombreArchivo.nombreVariable
+
+@use "variables";
+
+.nav {
+  background-color: variables.$color;
+  color: orange;
+}
+
+===================== Nesting o Anidamiento ====================
+El Nesting (anidamiento) en Sass es poder poner un componente dentro de
+otro componente, esto es para no tener que hace multiples llamados 
+sino pode poner el todos los componentes hijos dentro del padre.
+
+Forma de CSS Puro
+.nav ul{}
+.nav ul li{}
+.nav ul li a {}
+
+Forma de SASS Puro
+ .nav {
+   background-color: steelblue;
+
+   ul {
+     color: #000;
+
+     li a {
+       color: #fff;
+     }
+   }
+ }
+
+ Forma CORRECTA SASS con BEM
+ Nota: & => hace referencia al padre. De esta forma acortamos los llamados 
+ 
+ Pasamos de esto 
+ .nav {
+  background-color: steelblue;
+
+  .nav__container {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
+a esto. 
+.nav {
+  background-color: steelblue;
+
+  &__container {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
+
+====================================== Media Querys ======================================
+Forma de realizar media query con SASS
+@media (min-width: 764px) {
+    &__container {
+      &--ul {
+        justify-content: flex-end;
+      }
+    }
+    &__item {
+      padding: 0 20px;
+    }
+  }
+
+
+================================ Interpolacion ==============================
+Forma de realizar Interpolaciones de una variable a un root.
+// $primary: blue;
+
+// Interpolacion de variables
+:root {
+  --primary: #{$primary};
+}
+
+================================ Ciclos ==============================
+Esto es literal la utilizacion de ciclos en SASS para acortar codigo.
+
+// for de SASS
+@for => metodo de iteracion
+$iterador => variable que funciona como i
+from => desde Numero (desde donde parte)
+through => hasta Numero (hasta donde llega)
+
+@for $iterador from 1 through 5 { -> Ciclo For
+  .circle-#{$iterador} {
+    animation-name: animacion#{$iterador};
+
+    @keyframes animacion#{$iterador} {
+      100% {
+        transform: translate(50% * $iterador);
+      }
+    }
+    @if $iterador == 5 { -> Condicional if
+      animation-duration: alternate-reverse;
+    }
+  }
+}
+
+=============================== Mixin  ========================
+
+Los Mixin se utilizan para reciclar codigo que es muy repetitivo. 
+1. Creamos un Parchal para los mixin (codigo repetitivo)
+2. Importamos el Parchal al componente que vamos a usar @use "mixinsfunc";
+// sin valor en la funcion
+@mixin crear-flexbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+//con valor en la funcion
+@mixin crear-flexbox(value) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+3. Dentro de la clase es decir donde estan los stilos colocamos 
+@include mixinsfunc.crear-flexbox || @include mixinsfunc.crear-flexbox($justify) 
+
+=============================== Funciones ========================
+Las Funciones en SASS se utilizan para reciclar codigo matematico que es muy repetitivo. 
+Las funciones en SASS son muy similares a los mixin pero las funciones sirven para reutilizar codigo
+de operaciones matematicas, ya que se pueden usar matematicas en SASS y de esta forma crear funciones
+que ayuden al diseño de los sitios web 
